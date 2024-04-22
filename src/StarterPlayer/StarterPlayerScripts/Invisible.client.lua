@@ -4,5 +4,8 @@ GameStartGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList,false)
 
 --マウスカーソルの非表示
 local UserInputService = game:GetService("UserInputService")
-UserInputService.MouseIconEnabled = false
+--UserInputService.MouseIconEnabled = false
 
+--一人称視点に変更
+local player = game.Players.LocalPlayer
+--player.CameraMode = Enum.CameraMode.LockFirstPerson
