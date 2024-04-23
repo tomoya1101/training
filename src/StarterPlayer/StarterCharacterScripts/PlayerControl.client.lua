@@ -1,5 +1,10 @@
 --Lshiftのキーコードを入れる
 local KEY_LSHIFT = Enum.KeyCode.LeftShift
+--W・A・S・Dのキーコードを入れる
+local KEY_W = Enum.KeyCode.W
+local KEY_A = Enum.KeyCode.A
+local KEY_S = Enum.KeyCode.S
+local KEY_D = Enum.KeyCode.D
 --Zのキーコードを入れる
 local KEY_Z = Enum.KeyCode.Z
 --走るスピード
@@ -18,12 +23,18 @@ local UserInputService = game:GetService("UserInputService")
 --プレイヤーを取得
 local Players = game:GetService("Players")
 local Player = Players:FindFirstChildOfClass("Player")
+--Localのプレイヤー取得
+local LocalPlayer = game.Players.LocalPlayer
 --ReplicatedStorageを取得
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 --RemoteEventを取得
 local RemoteEvent = ReplicatedStorage:WaitForChild("RemoteEvent")
 --時間管理のために取得
 local RunService = game:GetService("RunService")
+--TweenServiceを使うために取得
+local TweenSize = game:GetService("TweenService")
+--TweenServiceを付けるGui
+local Frame = LocalPlayer.PlayerGui.Interface.StaminaBarBackGround.StaminaBar
 
 --スタミナ
 local stamina = MAX_STAMINA
@@ -39,8 +50,14 @@ local function SpeedConversion(active)
 	--プレイヤーについているHumanoidを取得
 	local Humanoid = Player.Character:FindFirstChildOfClass("Humanoid")	
 
-	--走っているときかつ、しゃがんいないとき
-	if active  and crouch ~= true then
+	--疲労状態の時は走れない
+	if fatigue_state then
+		running = false
+		return
+	end
+
+	--走っているとき
+	if active then
 		--プレイヤーのスピードを走るスピードに変える
 		Humanoid.WalkSpeed = RUN_SPEED
 	else
@@ -51,17 +68,15 @@ end
 
 --プレイヤーのしゃがみ変換
 local function Crouching(down)
-	--プレイヤーについているHumanoidを取得
-	local Humanoid = Player.Character:FindFirstChildOfClass("Humanoid")	
-
 	if down then
-		--プレイヤーのスピードを歩くスピードに変える
-		Humanoid.WalkSpeed = WALK_SPEED
+		--走っていない状態に
+		running = false;
+		SpeedConversion(running)
 	else
-		--しゃがみ解除したときに走っていれば走るようにする
-		if running then
-			--プレイヤーのスピードを走るスピードに変える
-			Humanoid.WalkSpeed = RUN_SPEED
+		if UserInputService:IsKeyDown(KEY_LSHIFT) then	
+			--走っている状態に
+			running = true
+			SpeedConversion(running)
 		end
 	end
 
@@ -72,8 +87,8 @@ end
 
 --入力した時の処理
 local function PushKey(key)		
-	--Lshiftを押しているとき
-	if key.KeyCode == KEY_LSHIFT then
+	--Lshiftを押しているときかつ、しゃがんいないとき
+	if key.KeyCode == KEY_LSHIFT and crouch ~= true then
 		--走っている状態に
 		running = true
 		SpeedConversion(running)
@@ -105,9 +120,26 @@ local function ReleaseKey(key)
 end
 
 --スタミナ管理
-local function StaminaManagement(deltatime)
+local function StaminaManagement(deltatime)	
+	--Guiスタミナゲージの増減
+	--Tweenされる関数、それに使用するTweenInfo、Guiのスケールをサイズを設定
+	TweenSize:Create(Frame,TweenInfo.new(0.1),{ Size = UDim2.fromScale(stamina / MAX_STAMINA,1) }):Play()
+	
 	--走っているとき
 	if running then
+		--WASDで移動していないときはスタミナを回復
+		if UserInputService:IsKeyDown(KEY_W) == false and 
+			UserInputService:IsKeyDown(KEY_A) == false and
+			UserInputService:IsKeyDown(KEY_S) == false and
+			UserInputService:IsKeyDown(KEY_D) == false then
+			--スタミナ限界値まで回復できる
+			if stamina < MAX_STAMINA then
+				--今のスタミナ　+　スタミナ固定値　×　前のフレームからの経過時間(40fps なら 1/40)
+				stamina = stamina + STAMINA_FIXED_VALUE * deltatime
+			end
+			--動いていないので以下の処理を行わないようにする
+			return
+		end
 		--スタミナが残っていれば
 		if stamina > 0 then
 			--スタミナを減らす
@@ -131,7 +163,6 @@ local function StaminaManagement(deltatime)
 			--疲労状態を回復
 			fatigue_state = false
 		end
-
 	end
 end
 
@@ -139,5 +170,5 @@ end
 UserInputService.InputBegan:Connect(PushKey)
 --プレイヤーがキーボード、マウスを離したときに呼び出す
 UserInputService.InputEnded:Connect(ReleaseKey)
-
+--フレームごとに呼ばれる
 RunService.Heartbeat:Connect(StaminaManagement)
