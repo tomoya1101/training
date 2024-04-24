@@ -85,7 +85,6 @@ while task.wait() do
 	if Player.Character then
 		--プレイヤーについているHumanoidを取得
 		local Humanoid = Player.Character:FindFirstChildOfClass("Humanoid")	
-		print(Humanoid.WalkSpeed )
 		--スピードが走りより遅いとき、
 		--またはeキーでしゃがんでいないとき、
 		--またはプレイヤー動いていないとき
