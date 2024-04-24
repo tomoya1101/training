@@ -28,6 +28,8 @@ local CollectionService = game:GetService("CollectionService")
 -- bool型 変数
 -----------------------------------------------------------------------
 
+--プレイヤー動いているか(true : 動いている false : 動いていない)
+local player_move = false
 --近くにN㍶がいるか(treu : いる false : いない)
 local near_enemy = false
 
@@ -43,6 +45,8 @@ FootSound.SoundId = "rbxassetid://2076455443"
 FootSound.Parent = script.Parent
 --ループするか(true : ループする false : ループしない)
 FootSound.Looped = true
+--音量変更
+FootSound.Volume = 0.1
 
 --心音を追加する
 local HeartSound = Instance.new("Sound")
@@ -52,8 +56,27 @@ HeartSound.SoundId = "rbxassetid://5948090748"
 HeartSound.Parent = script.Parent
 --ループするか(true : ループする false : ループしない)
 HeartSound.Looped = true
+--音量変更
+HeartSound.Volume = 0.3
 
 while task.wait() do
+	--WASDEキーを押しているかを取得
+	local down_w = UserInputService:IsKeyDown(Enum.KeyCode.W) 
+	local down_a = UserInputService:IsKeyDown(Enum.KeyCode.A)
+	local down_s = UserInputService:IsKeyDown(Enum.KeyCode.S)
+	local down_d = UserInputService:IsKeyDown(Enum.KeyCode.D)
+	local down_e = UserInputService:IsKeyDown(Enum.KeyCode.E)
+	
+	--プレイヤー動いているかチェック
+	if 	down_w or down_a or
+		down_s or down_d then
+		--どれかのキーを押していれば動いている状態にする
+		player_move = true
+	else
+		--どれも押していないときは動いていない状態にする
+		player_move = false
+	end
+
 	-----------------------------------------------------------------------
 	-- プレイヤー関係
 	-----------------------------------------------------------------------
@@ -62,12 +85,13 @@ while task.wait() do
 	if Player.Character then
 		--プレイヤーについているHumanoidを取得
 		local Humanoid = Player.Character:FindFirstChildOfClass("Humanoid")	
-		
-		--スピードが走りより遅いときまたは
-		--しゃがんでいるとき
+		print(Humanoid.WalkSpeed )
+		--スピードが走りより遅いとき、
+		--またはeキーでしゃがんでいないとき、
+		--またはプレイヤー動いていないとき
 		if Humanoid.WalkSpeed < RUN_SPEED or
-			UserInputService:IsKeyDown(KEY_E) then
-
+			down_e or
+			player_move == false then
 			--走る音を止める
 			FootSound:Stop()
 		else
