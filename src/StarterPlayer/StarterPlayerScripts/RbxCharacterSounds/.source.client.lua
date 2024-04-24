@@ -31,15 +31,15 @@ local SOUND_DATA : { [string]: {[string]: any}} = {
 		SoundId = "rbxasset://sounds/action_get_up.mp3",
 	},
 	Jumping = {
-		SoundId = "rbxasset://sounds/action_jump.mp3",
+		--SoundId = "rbxasset://sounds/action_jump.mp3",
 	},
 	Landing = {
 		SoundId = "rbxasset://sounds/action_jump_land.mp3",
 	},
 	Running = {
-		SoundId = "rbxasset://sounds/action_footsteps_plastic.mp3",
-		Looped = true,
-		Pitch = 1.85,
+		--SoundId = "rbxasset://sounds/action_footsteps_plastic.mp3",
+		--Looped = true,
+		--Pitch = 1.85,
 	},
 	Splash = {
 		SoundId = "rbxasset://sounds/impact_water.mp3",
