@@ -57,7 +57,7 @@ HeartSound.Parent = script.Parent
 --ループするか(true : ループする false : ループしない)
 HeartSound.Looped = true
 --音量変更
-HeartSound.Volume = 0.3
+HeartSound.Volume = 0.2
 
 while task.wait() do
 	--WASDEキーを押しているかを取得
