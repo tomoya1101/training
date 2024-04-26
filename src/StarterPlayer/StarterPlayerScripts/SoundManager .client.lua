@@ -57,7 +57,7 @@ HeartSound.Parent = script.Parent
 --ループするか(true : ループする false : ループしない)
 HeartSound.Looped = true
 --音量変更
-HeartSound.Volume = 0.2
+HeartSound.Volume = 0.3
 
 while task.wait() do
 	--WASDEキーを押しているかを取得
@@ -109,28 +109,25 @@ while task.wait() do
 		--npcsの数分ループする
 		for i, npc in ipairs(Npcs) do
 			--Npcに付いているHumanoidRootPartを取得
-			local NpcRoot = npc:FindFirstChild("HumanoidRootPart")
-			--NpcRootが存在するか確認
-			if NpcRoot ~= nil then	
-				--Playerに付いているHumanoidRootPartを取得
-				local PlayerRoot = Player.Character:FindFirstChild("HumanoidRootPart")
-				
-				--PlaeyrとNpcの距離をMagnitudeを使い表す
-				distance[i] = (NpcRoot.Position - PlayerRoot.Position).Magnitude
-				--print(distance) --距離が取れているかテスト
-				
-				--PlayerとNpcの距離が一定値よりも小さければ
-				if distance[i] < FEEDBACK_DISTANCE then
-					--近くにいる状態にする
-					near_enemy = true
-					--以下の処理を行ないたくないのでbreak
-					break
-				end
-				
-				--近くにNpcが存在しなかったので
-				--近くにいない状態にする
-				near_enemy = false			
-			end	
+			local NpcRoot = npc:WaitForChild("HumanoidRootPart")
+			--Playerに付いているHumanoidRootPartを取得
+			local PlayerRoot = Player.Character:FindFirstChild("HumanoidRootPart")
+			
+			--PlaeyrとNpcの距離をMagnitudeを使い表す
+			distance[i] = (NpcRoot.Position - PlayerRoot.Position).Magnitude
+			--print(distance) --距離が取れているかテスト
+			
+			--PlayerとNpcの距離が一定値よりも小さければ
+			if distance[i] < FEEDBACK_DISTANCE then
+				--近くにいる状態にする
+				near_enemy = true
+				--以下の処理を行ないたくないのでbreak
+				break
+			end
+			
+			--近くにNpcが存在しなかったので
+			--近くにいない状態にする
+			near_enemy = false			
 		end
 		
 		--近くにN㍶がいるか
