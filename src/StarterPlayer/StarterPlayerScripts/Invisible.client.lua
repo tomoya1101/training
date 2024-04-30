@@ -11,9 +11,10 @@ local player = game.Players.LocalPlayer
 --player.CameraMode = Enum.CameraMode.LockFirstPerson
 
 
---プレイヤーについているHumanoidを取得
+--プレイヤーを取得
 local Players = game:GetService("Players")
 local Player = Players:FindFirstChildOfClass("Player")
+
 while task.wait() do
     --nilチェック プレイヤー存在しているか
 	if Player.Character then

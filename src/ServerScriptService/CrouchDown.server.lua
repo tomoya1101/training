@@ -1,5 +1,17 @@
 --プレイヤーの取得
 local Players = game:GetService("Players")
+local p = Players:GetChildren()
+--プレイヤーを小さくする
+task.wait(3)
+for _, player in pairs(Players:GetChildren()) do
+	local h = player.Character:FindFirstChildOfClass("Humanoid")
+	local description = h:WaitForChild("HumanoidDescription")
+	--プレイヤーのサイズを小さくする
+	description.HeightScale -= 0.3
+	--変更を適用
+	h:ApplyDescription(description)	
+end
+
 --ReplicatedStorageを取得
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 --RemoteEventを取得

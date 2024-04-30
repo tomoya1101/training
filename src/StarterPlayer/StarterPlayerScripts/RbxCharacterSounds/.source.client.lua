@@ -56,6 +56,7 @@ local function map(x: number, inMin: number, inMax: number, outMin: number, outM
 	return (x - inMin)*(outMax - outMin)/(inMax - inMin) + outMin
 end
 
+
 local function getRelativeVelocity(cm, velocity)
 	if not cm then
 		return velocity
