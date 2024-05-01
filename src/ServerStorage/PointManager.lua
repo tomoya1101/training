@@ -54,7 +54,6 @@ function PointManager.MinCountPosition ()
 	for i, point in ipairs(Point) do
 		if min_count == point:GetAttribute("count") then
 			min_position[count] = point.Position
-			print(min_position[count])
 			count = count + 1
 		end
 	end
