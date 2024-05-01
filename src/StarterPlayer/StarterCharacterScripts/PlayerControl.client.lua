@@ -5,8 +5,8 @@ local KEY_W = Enum.KeyCode.W
 local KEY_A = Enum.KeyCode.A
 local KEY_S = Enum.KeyCode.S
 local KEY_D = Enum.KeyCode.D
---Zのキーコードを入れる
-local KEY_Z = Enum.KeyCode.Z
+--LeftControlのキーコードを入れる
+local KEY_LCONTROTL = Enum.KeyCode.LeftControl
 --走るスピード
 local RUN_SPEED = 20
 --歩くスピード
@@ -94,8 +94,8 @@ local function PushKey(key)
 		SpeedConversion(running)
 	end
 	
-	--Zキーを押したときかつ、しゃがんでいないとき
-	if key.KeyCode == KEY_Z and crouch ~= true then
+	--左コントロールキーを押したときかつ、しゃがんでいないとき
+	if key.KeyCode == KEY_LCONTROTL and crouch ~= true then
 		--プレイヤーをしゃがみ状態に
 		crouch = true
 		Crouching(crouch)
@@ -111,8 +111,8 @@ local function ReleaseKey(key)
 		SpeedConversion(running)
 	end
 
-	--離したキーがZの時
-	if key.KeyCode == KEY_Z then
+	--離したキーが左コントロールの時
+	if key.KeyCode == KEY_LCONTROTL then
 		--プレイヤーをしゃがみ状態を解除
 		crouch = false
 		Crouching(crouch)

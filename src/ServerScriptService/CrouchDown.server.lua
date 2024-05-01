@@ -2,7 +2,7 @@
 local Players = game:GetService("Players")
 local p = Players:GetChildren()
 --プレイヤーを小さくする
-task.wait(3)
+task.wait(2)
 for _, player in pairs(Players:GetChildren()) do
 	local h = player.Character:FindFirstChildOfClass("Humanoid")
 	local description = h:WaitForChild("HumanoidDescription")

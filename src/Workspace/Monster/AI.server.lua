@@ -11,12 +11,12 @@ NpcManager.PathCreate(6,2)
 --ServerStorageのPointManagerを使えるようにする
 local PointManager = require(game:GetService("ServerScriptService").PointManager)
 --足にPartが触れた時に呼び出す
-NPC["Left Leg"].Touched:Connect(PointManager.PointCount)
-NPC["Right Leg"].Touched:Connect(PointManager.PointCount)
+NPC["leftleg"].Touched:Connect(PointManager.PointCount)
+NPC["rightleg"].Touched:Connect(PointManager.PointCount)
 
 while true do
 	--移動処理
-	NpcManager.PassedTimesFewPointMove(NPC)
+	NpcManager.PassedTimesManyPointMove(NPC)
 	--少し待ってから動き出すようにする
 	task.wait(Random.new():NextNumber(1,2))
 end
